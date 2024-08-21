@@ -6,82 +6,10 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Check from '@mui/icons-material/Check';
-import SettingsIcon from '@mui/icons-material/Settings';
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
-import VideoLabelIcon from '@mui/icons-material/VideoLabel';
+import { Box, Typography, useTheme, useMediaQuery } from '@mui/material';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
 import { AuthContext } from 'contexts/authContext';
 import MainCard from 'components/MainCard';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-
-const QontoConnector = styled(StepConnector)(({ theme }) => ({
-  [`&.${stepConnectorClasses.alternativeLabel}`]: {
-    top: 10,
-    left: 'calc(-50% + 16px)',
-    right: 'calc(50% + 16px)'
-  },
-  [`&.${stepConnectorClasses.active}`]: {
-    [`& .${stepConnectorClasses.line}`]: {
-      borderColor: '#784af4'
-    }
-  },
-  [`&.${stepConnectorClasses.completed}`]: {
-    [`& .${stepConnectorClasses.line}`]: {
-      borderColor: '#784af4'
-    }
-  },
-  [`& .${stepConnectorClasses.line}`]: {
-    borderColor: theme.palette.mode === 'dark' ? theme.palette.grey[800] : '#eaeaf0',
-    borderTopWidth: 3,
-    borderRadius: 1
-  }
-}));
-
-const QontoStepIconRoot = styled('div')(({ theme, ownerState }) => ({
-  color: theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#eaeaf0',
-  display: 'flex',
-  height: 22,
-  alignItems: 'center',
-  ...(ownerState.active && {
-    color: '#784af4'
-  }),
-  '& .QontoStepIcon-completedIcon': {
-    color: '#784af4',
-    zIndex: 1,
-    fontSize: 18
-  },
-  '& .QontoStepIcon-circle': {
-    width: 8,
-    height: 8,
-    borderRadius: '50%',
-    backgroundColor: 'currentColor'
-  }
-}));
-
-function QontoStepIcon(props) {
-  const { active, completed, className } = props;
-
-  return (
-    <QontoStepIconRoot ownerState={{ active }} className={className}>
-      {completed ? <Check className="QontoStepIcon-completedIcon" /> : <div className="QontoStepIcon-circle" />}
-    </QontoStepIconRoot>
-  );
-}
-
-QontoStepIcon.propTypes = {
-  /**
-   * Whether this step is active.
-   * @default false
-   */
-  active: PropTypes.bool,
-  className: PropTypes.string,
-  /**
-   * Mark the step as completed. Is passed to child components.
-   * @default false
-   */
-  completed: PropTypes.bool
-};
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -109,8 +37,8 @@ const ColorlibStepIconRoot = styled('div')(({ theme, ownerState }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#ccc',
   zIndex: 1,
   color: '#fff',
-  width: 50,
-  height: 50,
+  width: 40,
+  height: 40,
   display: 'flex',
   borderRadius: '50%',
   justifyContent: 'center',
@@ -126,7 +54,6 @@ const ColorlibStepIconRoot = styled('div')(({ theme, ownerState }) => ({
 
 function ColorlibStepIcon(props) {
   const { active, completed, className } = props;
-
   const icons = {
     1: <Check />,
     2: <Check />,
@@ -136,7 +63,6 @@ function ColorlibStepIcon(props) {
     6: <Check />,
     7: <Check />
   };
-
   return (
     <ColorlibStepIconRoot ownerState={{ completed, active }} className={className}>
       {icons[String(props.icon)]}
@@ -145,20 +71,9 @@ function ColorlibStepIcon(props) {
 }
 
 ColorlibStepIcon.propTypes = {
-  /**
-   * Whether this step is active.
-   * @default false
-   */
   active: PropTypes.bool,
   className: PropTypes.string,
-  /**
-   * Mark the step as completed. Is passed to child components.
-   * @default false
-   */
   completed: PropTypes.bool,
-  /**
-   * The label displayed in the step icon.
-   */
   icon: PropTypes.node
 };
 
@@ -186,8 +101,11 @@ export default function CustomizedSteppers() {
     return carRental.find((car) => car.carId === id);
   };
 
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
   return (
-    <Stack sx={{ width: '100%' }} spacing={4}>
+    <Stack sx={{ width: '100%' }} spacing={2}>
       {bookings
         .filter((booking) => booking.bookingStatus !== 'Cancelled')
         .map((booking) => {
@@ -196,37 +114,47 @@ export default function CustomizedSteppers() {
           const driver = getdriver(booking.driverId);
           const car = getCar(booking.vehicleId);
           return (
-            <MainCard key={booking.id}>
-              <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'} marginBottom={'5px'}>
-                <Typography variant="h6">
-                  <b> {booking.bookingType}</b>
-                </Typography>
-                <Typography variant="h6">
-                  <b>ID:</b> {booking.id}
-                </Typography>
+            <MainCard key={booking.id} sx={{ p: 2 }}>
+              <Box display="flex" flexDirection="column" alignItems="flex-start" mb={2}>
+                <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-between" width="100%">
+                  <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                    {booking.bookingType}
+                  </Typography>
+                  <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                    ID: {booking.id}
+                  </Typography>
+                </Box>
                 {user && (
-                  <Typography variant="body1">
+                  <Typography variant="body2">
                     <b>Customer:</b> {user.name}
                   </Typography>
                 )}
                 {driver && (
-                  <Typography variant="body1">
+                  <Typography variant="body2">
                     <b>Driver:</b> {driver.name}
                   </Typography>
                 )}
                 {car && (
-                  <Typography variant="body1">
+                  <Typography variant="body2">
                     <b>Car:</b> {car.model}
                   </Typography>
                 )}
               </Box>
-              <Stepper key={booking.id} alternativeLabel activeStep={activeStep} connector={<ColorlibConnector />}>
-                {steps.map((label) => (
-                  <Step key={label}>
-                    <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
-                  </Step>
-                ))}
-              </Stepper>
+              <Box sx={{ overflowX: 'auto' }}>
+                <Stepper
+                  alternativeLabel
+                  activeStep={activeStep}
+                  connector={<ColorlibConnector />}
+                  orientation="horizontal"
+                  sx={{ flexWrap: 'nowrap' }}
+                >
+                  {steps.map((label, index) => (
+                    <Step key={label}>
+                      <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
+                    </Step>
+                  ))}
+                </Stepper>
+              </Box>
             </MainCard>
           );
         })}

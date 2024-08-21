@@ -47,7 +47,7 @@ const AuthProvider = ({ children }) => {
         const registration = await navigator.serviceWorker.register(
           "/Live/firebase-messaging-sw.mjs"
         );
-        console.log("Service Worker registered with scope:", registration.scope);
+        
 
         const permission = await Notification.requestPermission();
         if (permission === 'granted') {
@@ -55,7 +55,7 @@ const AuthProvider = ({ children }) => {
             vapidKey: VITE_APP_VAPID_KEY,
             serviceWorkerRegistration:registration
           });
-          console.log(token, "token ");
+          
 
           //We can send token to server
           return token;
@@ -64,11 +64,9 @@ const AuthProvider = ({ children }) => {
           return null;
         }
 
-      }else{
-        console.log("i am in else")
       }
     } catch (error) {
-      console.log(error);
+      return null;
     }
 
   }
