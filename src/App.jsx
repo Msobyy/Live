@@ -16,7 +16,7 @@ export default function App() {
     <AuthProvider>
       <ThemeCustomization>
         <ScrollTop>
-          <RouterProvider router={router} />
+          <RouterProvider router={router}  />
           <ToastContainer />
         </ScrollTop>
       </ThemeCustomization>
