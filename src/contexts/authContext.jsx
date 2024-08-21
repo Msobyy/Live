@@ -45,7 +45,7 @@ const AuthProvider = ({ children }) => {
     const permission = await Notification.requestPermission();
     try {
       const registration = await navigator.serviceWorker.register(
-        "/Live/firebase-messaging-sw.js",
+        "/Live/firebase-messaging-sw.mjs",
         { type: "module" }
       )
 
