@@ -44,10 +44,15 @@ const AuthProvider = ({ children }) => {
     //requesting permission using Notification API
     const permission = await Notification.requestPermission();
     try {
+      const registration = await navigator.serviceWorker.register(
+        "/Live/firebase-messaging-sw.js",
+        { type: "module" }
+      )
 
       if (permission === 'granted') {
         const token = await getToken(messaging, {
-          vapidKey: VITE_APP_VAPID_KEY
+          vapidKey: VITE_APP_VAPID_KEY,
+          serviceWorkerRegistration: registration
         });
         console.log(token, "token");
 
