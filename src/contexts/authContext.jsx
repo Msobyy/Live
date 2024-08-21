@@ -7,21 +7,21 @@ import { Updatedocdata } from 'utils/firebaseutils';
 
 const AuthContext = createContext({
   isLoggedIn: false,
-  setIsLoggedIn: () => {},
+  setIsLoggedIn: () => { },
   userData: null,
-  setUserData: () => {},
+  setUserData: () => { },
   carRental: null,
-  setCarRental: () => {},
+  setCarRental: () => { },
   bookings: null,
-  setBookings: () => {},
+  setBookings: () => { },
   drivers: null,
-  setDrivers: () => {},
+  setDrivers: () => { },
   users: null,
-  setUsers: () => {},
+  setUsers: () => { },
   tours: null,
-  setTours: () => {},
+  setTours: () => { },
   airports: null,
-  setAirports: () => {}
+  setAirports: () => { }
 });
 
 const AuthProvider = ({ children }) => {
@@ -43,18 +43,24 @@ const AuthProvider = ({ children }) => {
   async function requestPermission() {
     //requesting permission using Notification API
     const permission = await Notification.requestPermission();
+    try {
 
-    if (permission === 'granted') {
-      const token = await getToken(messaging, {
-        vapidKey: VITE_APP_VAPID_KEY
-      });
+      if (permission === 'granted') {
+        const token = await getToken(messaging, {
+          vapidKey: VITE_APP_VAPID_KEY
+        });
+        console.log(token, "token");
 
-      //We can send token to server
+        //We can send token to server
 
-      return token;
-    } else if (permission === 'denied') {
-      //notifications are blocked
-      alert('You denied for the notification');
+        return token;
+      } else if (permission === 'denied') {
+        //notifications are blocked
+        alert('You denied for the notification');
+        return null;
+      }
+    } catch (e) {
+      console.log(e);
       return null;
     }
   }
@@ -72,7 +78,7 @@ const AuthProvider = ({ children }) => {
   }, [isLoggedIn, userData]);
 
   useEffect(() => {
-    let unsubNotifications = () => {};
+    let unsubNotifications = () => { };
     if (isLoggedIn) {
       const unsub = onSnapshot(collection(db, 'bookings'), (snapshot) => {
         const arr = [];
