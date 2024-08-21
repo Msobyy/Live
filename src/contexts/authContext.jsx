@@ -48,7 +48,7 @@ const AuthProvider = ({ children }) => {
       const token = await getToken(messaging, {
         vapidKey: VITE_APP_VAPID_KEY
       });
-      console.log(token,"token");
+      console.log(token,"token ");
 
       //We can send token to server
 

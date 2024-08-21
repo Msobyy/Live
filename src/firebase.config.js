@@ -34,7 +34,7 @@ export const messaging = getMessaging(app);
 
 
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('Live/firebase-messaging-sw.mjs')
+  navigator.serviceWorker.register('/Live/firebase-messaging-sw.mjs')
     .then((registration) => {
       console.log('Service Worker registered with scope:', registration.scope);
     })
