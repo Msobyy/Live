@@ -121,6 +121,8 @@ export default function DashboardDefault() {
             <CustomizedSteppers />
           </MainCard>
         </Grid>
+
+        
         <Grid item xs={12} md={5} lg={4}>
           <Grid container alignItems="center" justifyContent="space-between">
             <Grid item>
@@ -140,6 +142,7 @@ export default function DashboardDefault() {
             <MonthlyBarChart />
           </MainCard>
         </Grid>
+        
 
         {/* row 3 */}
         <Grid item xs={12} md={7} lg={8}>

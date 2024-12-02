@@ -80,16 +80,6 @@ ColorlibStepIcon.propTypes = {
 const steps = ['Pending', 'Accepted', 'On the Way', 'Arrived', 'In-Progress', 'Completed', 'Cancelled'];
 
 export default function CustomizedSteppers() {
-  const groupByBookingType = (bookings) => {
-    return bookings.reduce((acc, booking) => {
-      if (!acc[booking.bookingType]) {
-        acc[booking.bookingType] = [];
-      }
-      acc[booking.bookingType].push(booking);
-      return acc;
-    }, {});
-  };
-
   const { bookings, carRental, users, drivers } = React.useContext(AuthContext);
   const getuser = (id) => {
     return users.find((user) => user.userId === id);
@@ -140,7 +130,7 @@ export default function CustomizedSteppers() {
                   </Typography>
                 )}
               </Box>
-              <Box sx={{ overflowX: 'auto' }}>
+              <Box sx={{ overflowX: isSmallScreen ? 'auto' : 'hidden' }}>
                 <Stepper
                   alternativeLabel
                   activeStep={activeStep}

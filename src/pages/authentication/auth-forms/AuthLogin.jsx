@@ -62,11 +62,13 @@ export default function AuthLogin({ isDemo = false }) {
 
     try {
       const isAdmin = await getUser(ph);
+      console.log('Admin', isAdmin);
       if (isAdmin) {
         const response = await onCaptchVerify();
 
         if (response) {
           const formatPh = '+' + ph;
+          console.log('pkpkpkp', formatPh, auth, response);
           const confirmationResult = await signInWithPhoneNumber(auth, formatPh, response);
           window.confirmationResult = confirmationResult;
           setShowOtp(true);
